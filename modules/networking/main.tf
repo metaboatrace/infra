@@ -66,7 +66,7 @@ resource "aws_route_table_association" "public" {
 
 resource "aws_eip" "nat" {
   for_each = var.availability_zones
-  vpc      = true
+  domain   = "vpc"
 }
 
 resource "aws_nat_gateway" "nat" {
