@@ -40,7 +40,9 @@ resource "aws_internet_gateway" "this" {
   vpc_id = aws_vpc.this.id
 
   tags = {
-    Name = "${var.project}-${var.env}-igw"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-igw"
   }
 }
 
@@ -53,7 +55,9 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name = "${var.project}-${var.env}-public-rt"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-public-rt"
   }
 }
 
@@ -73,6 +77,12 @@ resource "aws_nat_gateway" "nat" {
   for_each      = var.availability_zones
   allocation_id = aws_eip.nat[each.key].id
   subnet_id     = aws_subnet.public[each.key].id
+
+  tags = {
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-nat"
+  }
 }
 
 resource "aws_route_table" "private" {
@@ -84,7 +94,9 @@ resource "aws_route_table" "private" {
   }
 
   tags = {
-    Name = "${var.project}-${var.env}-private-rt"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-private-rt"
   }
 }
 
