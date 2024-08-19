@@ -25,7 +25,9 @@ resource "aws_security_group" "aurora_sg" {
   }
 
   tags = {
-    Name = "${var.project}-${var.env}-aurora-sg"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-aurora-sg"
   }
 }
 
@@ -34,7 +36,9 @@ resource "aws_db_subnet_group" "aurora_subnet_group" {
   subnet_ids = var.private_subnet_ids
 
   tags = {
-    Name = "${var.project}-${var.env}-db-subnet-group"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-db-subnet-group"
   }
 }
 
@@ -59,7 +63,9 @@ resource "aws_rds_cluster" "aurora" {
   }
 
   tags = {
-    Name = "${var.project}-${var.env}-aurora-cluster"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-aurora-cluster"
   }
 }
 
@@ -74,6 +80,8 @@ resource "aws_rds_cluster_instance" "aurora_instance" {
   apply_immediately    = true
 
   tags = {
-    Name = "${var.project}-${var.env}-aurora-instance"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-aurora-instance"
   }
 }

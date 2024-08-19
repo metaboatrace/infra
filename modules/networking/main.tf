@@ -4,7 +4,9 @@ resource "aws_vpc" "this" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "${var.project}-${var.env}-vpc"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-vpc"
   }
 }
 
@@ -15,7 +17,9 @@ resource "aws_subnet" "private" {
   cidr_block        = cidrsubnet(aws_vpc.this.cidr_block, 8, 0 + each.value.order)
 
   tags = {
-    Name = "${var.project}-${var.env}-private-${each.value.id}"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-private-${each.value.id}"
   }
 }
 
@@ -26,7 +30,9 @@ resource "aws_subnet" "public" {
   cidr_block        = cidrsubnet(aws_vpc.this.cidr_block, 8, 3 + each.value.order)
 
   tags = {
-    Name = "${var.project}-${var.env}-public-${each.value.id}"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-public-${each.value.id}"
   }
 }
 
@@ -34,7 +40,9 @@ resource "aws_internet_gateway" "this" {
   vpc_id = aws_vpc.this.id
 
   tags = {
-    Name = "${var.project}-${var.env}-igw"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-igw"
   }
 }
 
@@ -47,7 +55,9 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name = "${var.project}-${var.env}-public-rt"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-public-rt"
   }
 }
 
@@ -61,6 +71,12 @@ resource "aws_route_table_association" "public" {
 resource "aws_eip" "nat" {
   for_each = var.availability_zones
   domain   = "vpc"
+
+  tags = {
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-eip-${each.value.id}"
+  }
 }
 
 resource "aws_nat_gateway" "nat" {
@@ -69,7 +85,9 @@ resource "aws_nat_gateway" "nat" {
   subnet_id     = aws_subnet.public[each.key].id
 
   tags = {
-    Name = "${var.project}-${var.env}-nat"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-nat-${each.value.id}"
   }
 }
 
@@ -82,7 +100,9 @@ resource "aws_route_table" "private" {
   }
 
   tags = {
-    Name = "${var.project}-${var.env}-private-rt"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-private-rt"
   }
 }
 

@@ -6,7 +6,9 @@ resource "aws_lb" "this" {
   subnets            = var.public_subnet_ids
 
   tags = {
-    Name = "${var.project}-${var.env}-alb"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-alb"
   }
 }
 
@@ -26,7 +28,9 @@ resource "aws_lb_target_group" "this" {
   }
 
   tags = {
-    Name = "${var.project}-${var.env}-tg"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-tg"
   }
 }
 
@@ -41,7 +45,9 @@ resource "aws_lb_listener" "http" {
   }
 
   tags = {
-    Name = "${var.project}-${var.env}-listener"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-listener"
   }
 }
 
@@ -63,6 +69,8 @@ resource "aws_security_group" "alb_sg" {
   }
 
   tags = {
-    Name = "${var.project}-${var.env}-alb-sg"
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-alb-sg"
   }
 }
