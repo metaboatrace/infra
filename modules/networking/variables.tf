@@ -13,12 +13,6 @@ variable "project" {
   default     = "metaboatrace"
 }
 
-variable "vpc_cidr_block" {
-  description = "VPC CIDR Block"
-  type        = string
-  default     = "10.0.0.0/16"
-}
-
 variable "availability_zones" {
   description = "Availability Zones"
   type = map(object({

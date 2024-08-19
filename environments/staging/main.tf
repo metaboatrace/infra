@@ -5,9 +5,7 @@ locals {
 module "networking" {
   source = "../../modules/networking"
 
-  env            = local.env
-  vpc_cidr_block = "10.0.0.0/16"
-
+  env = local.env
   availability_zones = {
     ap-northeast-1a = {
       order = 0
