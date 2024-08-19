@@ -1,9 +1,9 @@
 data "aws_ssm_parameter" "database_username" {
-  name = "/${var.env}/database-username"
+  name = "/${var.project}/origin-data/${var.env}/db/username"
 }
 
 data "aws_ssm_parameter" "database_password" {
-  name            = "/${var.env}/database-password"
+  name            = "/${var.project}/origin-data/${var.env}/db/password"
   with_decryption = true
 }
 
