@@ -3,7 +3,7 @@ locals {
 }
 
 module "networking" {
-  source = "../modules/networking"
+  source = "../../modules/networking"
 
   env            = local.env
   vpc_cidr_block = "10.0.0.0/16"
@@ -17,7 +17,7 @@ module "networking" {
 }
 
 module "database" {
-  source = "../modules/database"
+  source = "../../modules/database"
 
   env                = local.env
   vpc_id             = module.networking.vpc_id
