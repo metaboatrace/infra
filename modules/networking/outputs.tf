@@ -17,3 +17,8 @@ output "aurora_security_group_id" {
   description = "Security group ID for the Aurora cluster"
   value       = aws_security_group.aurora.id
 }
+
+output "alb_security_group_id" {
+  description = "Security group ID for the ALB"
+  value       = aws_security_group.alb.id
+}
