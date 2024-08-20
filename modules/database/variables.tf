@@ -13,9 +13,14 @@ variable "project" {
   default     = "metaboatrace"
 }
 
-variable "vpc_id" {
-  description = "The ID of the VPC"
+variable "aurora_security_group_id" {
+  description = "Security group ID for the Aurora cluster"
   type        = string
+}
+
+variable "availability_zones" {
+  description = "List of availability zones for the RDS cluster"
+  type        = list(string)
 }
 
 variable "private_subnet_ids" {
@@ -26,4 +31,9 @@ variable "private_subnet_ids" {
 variable "database_name" {
   description = "The name of the database"
   default     = "boatrace_origin_data"
+}
+
+variable "aurora_cluster_instance_size" {
+  type        = number
+  description = "The number of instances of Aurora cluster"
 }

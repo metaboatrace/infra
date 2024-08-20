@@ -112,3 +112,27 @@ resource "aws_nat_gateway" "nat" {
     Name    = "${var.project}-${var.env}-nat-${each.value.id}"
   }
 }
+
+resource "aws_security_group" "aurora" {
+  vpc_id = aws_vpc.this.id
+
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/16"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-aurora-sg"
+  }
+}
