@@ -160,3 +160,36 @@ resource "aws_security_group" "alb" {
     Name    = "${var.project}-${var.env}-alb-sg"
   }
 }
+
+resource "aws_security_group" "crawler" {
+  name        = "${var.project}-crawler"
+  description = "Security group for Frontend Fargate tasks"
+  vpc_id      = aws_vpc.this.id
+
+  ingress {
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb.id]
+  }
+
+  ingress {
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-crawler-sg"
+  }
+}
