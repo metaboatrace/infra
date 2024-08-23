@@ -37,3 +37,13 @@ variable "aurora_cluster_instance_size" {
   type        = number
   description = "The number of instances of Aurora cluster"
 }
+
+variable "serverless_v2_max_capacity" {
+  description = "Serverless V2 Max Capacity"
+  type        = number
+}
+
+variable "serverless_v2_min_capacity" {
+  description = "Serverless V2 Min Capacity"
+  type        = number
+}

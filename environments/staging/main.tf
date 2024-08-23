@@ -41,6 +41,8 @@ module "database" {
   private_subnet_ids           = module.networking.private_subnet_ids
   aurora_cluster_instance_size = 1
   availability_zones           = ["ap-northeast-1a", "ap-northeast-1c"]
+  serverless_v2_min_capacity   = 1
+  serverless_v2_max_capacity   = 2
 }
 
 module "container_management" {

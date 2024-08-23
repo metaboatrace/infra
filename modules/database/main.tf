@@ -23,7 +23,7 @@ resource "aws_rds_cluster" "aurora" {
   availability_zones      = var.availability_zones
   engine                  = "aurora-postgresql"
   engine_version          = "16.1"
-  engine_mode             = "serverless"
+  engine_mode             = "provisioned"
   database_name           = var.database_name
   master_username         = data.aws_ssm_parameter.database_username.value
   master_password         = data.aws_ssm_parameter.database_password.value
@@ -32,13 +32,11 @@ resource "aws_rds_cluster" "aurora" {
   db_subnet_group_name    = aws_db_subnet_group.aurora.name
   vpc_security_group_ids  = [var.aurora_security_group_id]
   skip_final_snapshot     = true
-  storage_encrypted       = false
+  apply_immediately       = true
 
-  scaling_configuration {
-    auto_pause               = true
-    max_capacity             = 2
-    min_capacity             = 1
-    seconds_until_auto_pause = 300
+  serverlessv2_scaling_configuration {
+    min_capacity = var.serverless_v2_min_capacity
+    max_capacity = var.serverless_v2_max_capacity
   }
 
   tags = {
@@ -52,10 +50,9 @@ resource "aws_rds_cluster_instance" "aurora" {
   count              = var.aurora_cluster_instance_size
   identifier         = "${var.project}-${var.env}-aurora-instance-${count.index + 1}"
   cluster_identifier = aws_rds_cluster.aurora.id
-  instance_class     = "db.serverless"
   engine             = aws_rds_cluster.aurora.engine
   engine_version     = aws_rds_cluster.aurora.engine_version
-  apply_immediately  = true
+  instance_class     = "db.serverless"
 
   tags = {
     Env     = var.env

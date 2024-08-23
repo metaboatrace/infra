@@ -12,28 +12,6 @@ resource "aws_lb" "this" {
   }
 }
 
-resource "aws_lb_target_group" "crawler" {
-  name     = "${var.project}-${var.env}-crawler-tg"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
-
-  health_check {
-    interval            = 30
-    path                = "/"
-    protocol            = "HTTP"
-    timeout             = 5
-    healthy_threshold   = 5
-    unhealthy_threshold = 2
-  }
-
-  tags = {
-    Env     = var.env
-    Project = var.project
-    Name    = "${var.project}-${var.env}-tg"
-  }
-}
-
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.this.arn
   port              = 80
@@ -48,5 +26,29 @@ resource "aws_lb_listener" "http" {
     Env     = var.env
     Project = var.project
     Name    = "${var.project}-${var.env}-crawler-http-listener"
+  }
+}
+
+resource "aws_lb_target_group" "crawler" {
+  name        = "${var.project}-${var.env}-crawler-tg"
+  port        = 80
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
+  target_type = "ip"
+
+  health_check {
+    enabled             = true
+    interval            = 30
+    path                = "/"
+    protocol            = "HTTP"
+    timeout             = 5
+    healthy_threshold   = 5
+    unhealthy_threshold = 2
+  }
+
+  tags = {
+    Env     = var.env
+    Project = var.project
+    Name    = "${var.project}-${var.env}-crawler-tg"
   }
 }
