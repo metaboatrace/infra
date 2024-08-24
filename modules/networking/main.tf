@@ -174,8 +174,8 @@ resource "aws_security_group" "crawler" {
   }
 
   ingress {
-    from_port   = 3000
-    to_port     = 3000
+    from_port   = 5555
+    to_port     = 5555
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

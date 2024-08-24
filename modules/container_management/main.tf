@@ -1,14 +1,26 @@
-resource "aws_ecr_repository" "crawler" {
-  name                 = "${var.project}-${var.env}-crawler-repository"
+resource "aws_ecr_repository" "crawler_proxy" {
+  name                 = "${var.project}-crawler-proxy-ecr"
   image_tag_mutability = "MUTABLE"
   image_scanning_configuration {
     scan_on_push = true
   }
 
   tags = {
-    Env     = var.env
     Project = var.project
-    Name    = "${var.project}-${var.env}-crawler-repo"
+    Name    = "${var.project}-crawler-proxy-ecr"
+  }
+}
+
+resource "aws_ecr_repository" "crawler_app" {
+  name                 = "${var.project}-crawler-app-ecr"
+  image_tag_mutability = "MUTABLE"
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+
+  tags = {
+    Project = var.project
+    Name    = "${var.project}-crawler-app-ecr"
   }
 }
 
@@ -31,8 +43,14 @@ locals {
   }
 }
 
-resource "aws_ecr_lifecycle_policy" "crawler" {
-  repository = aws_ecr_repository.crawler.name
+resource "aws_ecr_lifecycle_policy" "crawler_proxy" {
+  repository = aws_ecr_repository.crawler_proxy.name
+
+  policy = jsonencode(local.lifecycle_policy)
+}
+
+resource "aws_ecr_lifecycle_policy" "crawler_app" {
+  repository = aws_ecr_repository.crawler_app.name
 
   policy = jsonencode(local.lifecycle_policy)
 }
